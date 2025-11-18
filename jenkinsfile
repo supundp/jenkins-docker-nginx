@@ -4,12 +4,17 @@ pipeline {
     environment {
         IMAGE_NAME = "supundhananjaya6076/nginx-server:v1"
         DOCKER_HUB_CREDENTIALS = credentials('DockerID')
+        GitID = credentials('GitID')
     }
 
     stages {
         stage('Checkout Code') {
             steps {
                 git branch: 'main', url: 'https://github.com/supundp/jenkins-docker-nginx.git'
+                withCredentials([usernamePassword(credentialsId: 'GitID', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
+    sh 'git clone https://$GIT_USER:$GIT_PASS@github.com/supundp/jenkins-docker-nginx.git'
+}
+
             }
         }
 
